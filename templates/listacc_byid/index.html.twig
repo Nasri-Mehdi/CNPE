@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Information d'Accident{% endblock %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+			<a class="btn btn-primary glyphicon glyphicon-arrow-left" href="/list/accidents"> Return</a>
+		</div>
+	</div>
+	<br><br>
+    <table class="table table-striped">
+    {% for lsid in lsbyid %}
+        <tr>
+			<th>N chrono</th>
+			<td>{{lsid.nChrono}}</td>
+		</tr>
+														
+		<tr>
+			<th>N Prévensiss</th>
+			<td>{{lsid.nPrevensiss}}</td>
+		</tr>
+								
+		<tr>
+			<th>Date Accident</th>
+			<td>{{lsid.dateAccident|date('d/m/Y') }}</td>
+		</tr>
+								
+		<tr>
+			<th>Heure</th>
+		    <td>{{lsid.heure}}</td>
+		</tr>
+									
+		<tr>
+			<th>Type Accident</th>
+			<td>{{lsid.typeAccident}}</td>
+		</tr>
+									
+		<tr>
+			<th>Trajet/Service</th>
+			<td>{{lsid.trajetService}}</td>
+		</tr>
+									
+		<tr>
+			<th>Siege Lesions</th>
+			<td>{{lsid.siegeLesions}}</td>
+		</tr>
+									
+		<tr>
+			<th>Typologie EMR</th>
+			<td>{{lsid.typologieEmr}}</td>
+		</tr>
+									
+		<tr>
+			<th>Typologie EMS</th>
+			<td>{{lsid.typologieEms}}</td>
+		</tr>
+									
+		<tr>
+			<th>Nature lesions</th>
+			<td>{{lsid.natureLesions}}</td>
+		</tr>
+									
+		<tr>
+			<th>Recit succinct</th>
+			<td>{{lsid.recitSuccinct}}</td>
+		</tr>
+
+		<tr>
+			<th>Comptabilise CNPE</th>
+			<td>{{lsid.comptabiliseCnpe}}</td>
+		</tr>
+									
+		<tr>
+			<th>Service</th>
+			<td>{{lsid.service}}</td>
+		</tr>
+									
+		<tr>
+			<th>Employeur</th>
+			<td>{{lsid.employeur}}</td>
+		</tr>
+									
+		<tr>
+			<th>Entreprise utilisatrice</th>
+		    <td>{{lsid.entrepriseUtilisatrice}}</td>
+		</tr>
+									
+		<tr>
+			<th>Tranche</th>
+			<td>{{lsid.tranche}}</td>
+		</tr>
+									
+		<tr>
+		    <th>Lieu</th>
+			<td>{{lsid.lieu}}</td>
+		</tr>
+									
+		<tr>
+			<th>ZC/HZC</th>
+			<td>{{lsid.zcHzc}}</td>
+		</tr>
+									
+		<tr>
+			<th>Projet</th>
+			<td>{{lsid.projet}}</td>
+		</tr>
+									
+		<tr>
+			<th>Donneur dorder</th>
+			<td>{{lsid.donneurDorder}}</td>
+		</tr>
+									
+		<tr>
+			<th>ASE realise</th>
+			<td>{{lsid.aseRealise}}</td>
+		</tr>
+									
+		<tr>
+			<th>Etat ASE</th>
+			{% if lsid.aseRealise == 'OUI' %}
+				<td>Fini </td>
+			{% elseif "now"|date('Y-m-d') >= lsid.dateAccident|date_modify('+14 day')|date('Y-m-d') %}
+				<td>En retard</td>
+			{% else %}
+				<td>En cours</td>
+			{% endif %}
+			
+		</tr>
+									
+		<tr>
+			<th>Date limite ASE</th>
+			<td>{{lsid.dateAccident|date_modify('+14 day')|date('d/m/Y')}}</td>
+		</tr>
+									
+		<tr>
+			<th>Avancement ASE</th>
+			<td>{{lsid.avancementAse}}</td>
+		</tr>
+									
+		<tr>
+			<th>Date relance ASE</th>
+			<td>{{lsid.dateAccident|date_modify('+7 day')|date('d/m/Y')}}</td>
+		</tr>
+									
+		<tr>
+			<th>Date maj Prevensiss</th>
+		    <td>{{lsid.dateMajPrevensiss|date('d/m/Y')}}</td>
+		</tr>
+									
+		<tr>
+			<th>Lien ASE</th>
+			<td>{{lsid.lienAse}}</td>
+		</tr>
+									
+		<tr>
+			<th>Recueil realise</th>
+			<td>{{lsid.recueilRealise}}</td>
+		</tr>
+									
+		<tr>
+		    <th>Visite lieu</th>
+		    <td>{{lsid.visiteLieu}}</td>
+		</tr>
+									
+		<tr>
+			<th>Date changement d'etat</th>
+			<td>{{lsid.dateChangementEtat|date('d/m/Y')}}</td>
+		</tr>
+									
+		<tr>
+			<th>Vigilance partagee</th>
+			<td>{{lsid.vigilancePartagee}}</td>
+		</tr>
+									
+		<tr>
+			<th>Observation</th>
+			<td>{{lsid.observation}}</td>
+		</tr>
+								
+		<tr>
+			<th>Suivi d'action</th>
+			<td>{{lsid.suiviDaction}}</td>
+		</tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% if app.user.role is defined and app.user.role == 'Admin' %}
+
+    <div class='container'>
+    <h1> Ajoute nouveau d'utilisateur </h1>
+    <br><br>
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.username, {'label':"Nom d'utilisateur", 'attr':{'placeholder':"Nom d'utilisateur"}}) }}
+    {{ form_row(form.email, {'label':"Adress email", 'attr':{'placeholder':"Adresse email"}}) }}
+    {{ form_row(form.role, {'label':"Role", 'attr':{'placeholder':"role"}}) }}
+    {{ form_row(form.password, {'label':"Mot de pass", 'attr':{'placeholder':"Mot de pass"}}) }}
+
+    <div class="form-group row">
+    <label class="col-form-label col-sm-2"></label>
+    <div class="col-sm-2">
+        <button type='submit' class='btn btn-success'>Enregistre</button>
+    </div>
+    </div>
+    {{ form_end(form) }}
+
+    </div>
+{% endif %}
+
+{% endblock %}

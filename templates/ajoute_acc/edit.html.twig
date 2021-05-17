@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier d'Accident{% endblock %}
+
+
+{% block body %}
+{% if app.user %}
+    <div class="container">
+    <div class="row">
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+			<a class="btn btn-primary glyphicon glyphicon-arrow-left" href="/list/accidents"> Return</a>
+		</div>
+	</div>
+	<br><br>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    </div>
+{% endif %}  
+{% endblock %}

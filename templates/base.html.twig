@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+			<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+			<link rel="stylesheet" href="https://maxcdn.boostrapcdn.com/boostrap/3.4.0/css/boostrap.min.css">
+
+
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+            <script src="https://code.highcharts.com/highcharts.js"></script>
+            <script src="https://code.highcharts.com/highcharts-more.js"></script>
+            <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <script src="https://code.highcharts.com/modules/export-data.js"></script>
+            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+            <script src="https://code.highcharts.com/modules/xrange.js"></script>
+            <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+            <script src="https://code.highcharts.com/stock/highstock.js"></script>
+            <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+            <script src="https://code.highcharts.com/modules/data.js"></script>
+            <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+            <script src="https://code.highcharts.com/modules/series-label.js"></script>
+	</head>
+    <body>
+        
+		<div class="jumbotron text-center" style="margin-bottom:0">
+            {% if app.user %}
+                <P style="text-align:left;">Bonjour {{app.user.username}}</p>
+            {% endif %}
+            <h1>Service SPR</h1>
+        </div>
+        
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-inverse">
+            <div class="collapse navbar-collapse container-fluid" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="navbar-brand" href="/">Accueil</a>
+                </li>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">List Accident</a>
+                    <div class="dropdown-menu">
+                        <h5 class="dropdown-header">List Accident</h5>
+                        <a class="dropdown-item" href="/list/accidents">All Accident</a>
+                        <h5 class="dropdown-header">Function</h5>
+                        
+                        {% if app.user %}
+                        <a class="dropdown-item" href="/ajoute/acc">Ajouter une accident</a>
+                        {% endif %}
+
+                        <a class="dropdown-item" href="/charts">Chart d'accident</a>
+                    
+                    </div>
+                </li>
+                {% if app.user.role is defined and app.user.role == 'Admin' %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Admin Panel</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('list_membre') }}">Lists Membres</a>
+                        <a class="dropdown-item" href="{{ path('app_insription')}}">Ajouter Membre</a>
+                    </div>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if not app.user %}
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="{{ path('app_login')}}"><span class="glyphicon glyphicon-log-in"></span> Connexion</a>
+                        </li>
+                {% else %}
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="{{ path('app_logout')}}"><span class="glyphicon glyphicon-log-out"></span> Deconnexion</a>
+                        </li>
+                {% endif %}
+            </ul>
+            </div>
+	    </nav>
+
+       <!-- <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul> -->
+        <br><br><br>
+        {% endblock %}
+		{% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

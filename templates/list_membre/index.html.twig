@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ListMembreController!{% endblock %}
+
+{% block body %}
+
+{% if app.user.role is defined and app.user.role == 'Admin' %}
+
+<div class="container">
+    <table id="Membre" class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th width="100px">Username</th>
+                <th width="100px">Email</th>
+                <th width="100px">Role</th>
+                <th width="70px">Supprimer</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+        {% for m in mem %}
+            <tr>
+                <td>{{m.username}}</td>
+                <td>{{m.email}}</td>
+                <td>{{m.role}}</td>
+                <td>
+                {% if m.role != "Admin" %}
+                <a href="#" class="btn btn-danger glyphicon glyphicon-trash" data-id="{{ m.id }}">&nbsp;Supprimer</a>
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/membresupp.js') }}"></script>
+{% endblock %}

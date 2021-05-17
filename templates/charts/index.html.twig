@@ -1,0 +1,742 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Charts Accidents{% endblock %}
+
+{% block body %}
+
+<div class="row">
+	<div class="col-sm-7">
+		<div class="container">
+            <p><a href="/charts" class="btn btn-primary" style="width:130px">Tous</a></p>
+            <p><a href="/charts/APS" class="btn btn-primary" style="width:55px">APS</a> <a href="/charts/CDT" class="btn btn-primary" style="width:55px">CDT</a>
+            <a href="/charts/DIR" class="btn btn-primary" style="width:55px">DIR</a> <a href="/charts/ECT" class="btn btn-primary" style="width:55px">ECT</a>
+            <a href="/charts/FIA" class="btn btn-primary" style="width:55px">FIA</a> <a href="/charts/GNU" class="btn btn-primary" style="width:55px">GNU</a>
+            <a href="/charts/ISI" class="btn btn-primary" style="width:55px">ISI</a> <a href="/charts/MCE" class="btn btn-primary" style="width:55px">MCE</a>
+            <a href="/charts/MRH" class="btn btn-primary" style="width:55px">MRH</a> </p>
+            <p> <a href="/charts/MSR" class="btn btn-primary" style="width:55px">MSR</a>
+            <a href="/charts/MTE" class="btn btn-primary" style="width:55px">MTE</a> <a href="/charts/PMO" class="btn btn-primary" style="width:55px">PMO</a>
+            <a href="/charts/SAU" class="btn btn-primary" style="width:55px">SAU</a> <a href="/charts/SCF" class="btn btn-primary" style="width:55px">SCF</a>
+            <a href="/charts/SIR" class="btn btn-primary" style="width:55px">SIR</a> <a href="/charts/SMP" class="btn btn-primary" style="width:55px">SMP</a>
+            <a href="/charts/SPR" class="btn btn-primary" style="width:55px">SPR</a> <a href="/charts/SST" class="btn btn-primary" style="width:55px">SST</a></p>
+	    </div>
+	</div>
+	<div class="col-sm-5">
+		<div class="container">
+			<p id="demo"></p>
+			<!-- <form class="form-inline"> -->
+				<label for="date">Date Debut:</label>&nbsp;&nbsp;
+				<input type="date" style="width:150px" id="dd" placeholder="Date debut ..." name="dateDebut" value="">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="date">Date Fin:</label>&nbsp;&nbsp;
+				<input type="date" style="width:150px" id="df" placeholder="Date fin ..." name="dateFin" value="">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="submit" class="btn btn-primary" onClick="controle()">Submit</button>
+			<!-- </form> -->
+		</div>
+	</div>
+</div>
+<br><br><br>
+
+<div class="row">
+	<div class="col-sm-4">
+		<div id="container" style="min-width:310px; max-width: 800px; height: 400px; margin-left:0 auto"></div>
+	</div>
+	<div class="col-sm-4">
+		<div id="container1" style="min-width: 310px; height: 400px; margin-left:0 auto;"></div>
+	</div>
+	<div class="col-sm-4">
+		<div id="container2" style="min-width: 310px; height: 400px; margin-right:0 auto;"></div>
+	</div>
+</div>
+<br>
+<br>
+<br>
+<div class="row">
+	<div class="col-sm-6">
+		<div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	</div>
+	<div class="col-sm-6">
+		<div id="container5" style="min-width: 310px; height: 400px; margin-right:0 auto;"></div>
+	</div>
+</div>
+<br><br><br>
+<div class="row">
+	<div class="col-sm-12">
+		<div id="container6" style="min-width: 310px; height: 400px; margin-right:0 auto;"></div>
+	</div>
+</div>
+<br><br><br>
+<div class="row">
+	<div class="col-sm-6">
+		<div id="container7" style="min-width: 310px; height: 400px; margin:10px; "></div>
+	</div>
+</div>
+<br><br><br><br>
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+<script src="{{ asset('js/inputvaleur.js') }}"></script>
+
+<script>
+	Highcharts.chart('container', {
+				
+		chart: {
+			type:'bar'
+		},
+		title: {
+			text: "Nombre d'Accident du Travail par Type"
+		},
+		xAxis:{
+			categories:['AAA', 'ASA', 'AB'],
+			title: {
+				text: null
+			}
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Total',
+				align: 'high'
+			},
+			labels: {
+				overflow: 'justify'
+			}
+		},
+		tooltip: {
+			valueSuffix: ' Personnes'
+		},
+		plotOptions: {
+			bar: {
+				dataLabels: {
+					enabled: true
+				}
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'top',
+			x: -30,
+			y: 50,
+			floating: true,
+			borferWidth: 1,
+			backgroundColor:
+				Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+			shadow: true
+		},
+		creadits: {
+			enabled: false
+		},
+		series:[{
+			name: 'Tous les Accident',
+			data: [ {{ countAAA }}, {{ countASA }}, {{ countAB }} ]
+		},{
+			name: 'Accident la semain passe',
+			data: [ {{ countAAA7 }}, {{ countASA7 }}, {{ countAB7 }} ]
+		}],
+	});
+</script>
+
+<script>
+	Highcharts.chart('container1', {
+		chart: {
+			plotBackgroundColor: null,
+			plotBorderWidth: null,
+			plotShadow: false,
+			type: 'pie'
+		},
+		title: {
+			text: 'Typologie'
+		},
+		tooltip: {
+			pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+		},
+		plotOptions: {
+			pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: true,
+					format: '<b>{point.name}</b>: {point.percentage:.2f} %'
+				}
+			}
+		},
+		series: [{
+			type: 'pie',
+			name: 'percentage',
+			colorByPoint: true,
+			data: [ {
+				name:'Accident de plain-pied', 
+				y: {{ lscountbytypo1 }}
+			},{
+				name: 'Chute avec dénivellation',
+				y: {{ lscountbytypo2 }}
+			},{
+				name: 'Objet en cours de transport manuel',
+				y: {{ lscountbytypo4 }}
+			},{
+				name: 'Objet, particule en mvt accidentel',
+				y: {{ lscountbytypo5 }}
+			},{
+				name: 'Appareil, engin de levage, manut.',
+				y: {{ lscountbytypo6 }}
+			},{
+				name: 'Objet en cours de manipulation',
+				y: {{ lscountbytypo3 }}
+			},{
+				name: "Vehicule en circulation",
+				y: {{ lscountbytypo8 }}
+			},{
+				name: "Accessoires de levage & d'amarrage",
+				y: {{ lscountbytypo7 }}
+			},{
+				name: "Mach. Prod. & transform. Énergie",
+				y: {{ lscountbytypo9 }}
+			},{
+				name: "Organe de transmission",
+				y: {{ lscountbytypo10 }}
+			},{
+				name: "Machine et matériel à souder",
+				y: {{ lscountbytypo11 }}
+			},{
+				name: "Matériel ou engin de terrassement",
+				y: {{ lscountbytypo12 }}
+			},{
+				name: "Machine-outil",
+				y: {{ lscountbytypo13 }}
+			},{
+				name: "Outil port. tenu, guidé à la main",
+				y: {{ lscountbytypo14 }}
+			},{
+				name: "Outil individuel à main",
+				y: {{ lscountbytypo15 }}
+			},{
+				name: "Pression, appareil à pression",
+				y: {{ lscountbytypo16 }}
+			},{
+				name: "Chaleur, produits chauds",
+				y: {{ lscountbytypo17 }}
+			},{
+				name: "Froid, produits froids",
+				y: {{ lscountbytypo18 }}
+			},{
+				name: "Produits chimiques dangereux",
+				y: {{ lscountbytypo19 }}
+			},{
+				name: "Vapeur, gaz, poussière",
+				y: {{ lscountbytypo20 }}
+			},{
+				name: "Matière combustible en flamme",
+				y: {{ lscountbytypo21 }}
+			},{
+				name: "Matière explosive",
+				y: {{ lscountbytypo22 }}
+			},{
+				name: "Electricité",
+				y: {{ lscountbytypo23 }}
+			},{
+				name: "Rayonnment ionisants",
+				y: {{ lscountbytypo24 }}
+			},{
+				name: "Divers: incendie rixe malaise…",
+				y: {{ lscountbytypo25 }}
+			},{
+				name: "Déclaration non classée",
+				y: {{ lscountbytypo26 }}
+			
+			}]	        
+		}]
+	});
+</script>
+
+<script>
+	Highcharts.chart('container2', {
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: 'Siege des lesions'
+	    },
+			    
+	    xAxis: {
+	        categories: ['Buste','Main','Membre inférieur','Membre supérieur','Pied','Siège interne','Tête','Yeux','Divers:multiples'],
+	        crosshair: true
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: 'Total (%)'
+	        }
+	    },
+	    tooltip: {
+	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	            '<td style="padding:0"><b>{point.y:.1f} %</b></td></tr>',
+	        footerFormat: '</table>',
+	        shared: true,
+	        useHTML: true
+	    },
+	    plotOptions: {
+	        series: {
+	           //pointPadding: 0.2,
+	            borderWidth: 0,
+	            dataLabels: {
+	                enabled: true,
+	                format: '{point.y:.1f} %'
+	            }
+	        }
+	    },
+ 
+	    series: [{
+	    	name: 'siege',
+			data:[ 
+				{% if cbysiege != 0 %}
+				{{ cbysiege1 / cbysiege }}, {{ cbysiege2 / cbysiege }}, {{ cbysiege3 / cbysiege }}, {{ cbysiege4 / cbysiege }}, {{ cbysiege5 / cbysiege }}, {{ cbysiege6 / cbysiege }}, {{ cbysiege7 / cbysiege }}, {{ cbysiege8 / cbysiege }},  {{ cbysiege9 / cbysiege }}
+				{% elseif cbysiege == 0 %}
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+				{% endif %}
+			]
+	    }]
+		   
+	});
+	
+</script>
+
+<script>
+    Highcharts.chart('container4', {
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: "Nombre d'Accident du Travail par Service-2019"
+		},
+		xAxis: {
+			type: 'category'
+		},
+		yAxis: {
+			title: {
+				text:"Total Accident"
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+	        series: {
+	            borderWidth: 0,
+	            dataLabels: {
+	                enabled: true,
+	                format: '{point.y:.0f}'
+	            }
+	        }
+	    },
+	    tooltip: {
+	        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> Perssones <br/>'
+	    },
+		    
+	    series: [{
+	    	name: "Service",
+	    	colorByPoint: true,
+	    	data: [{
+	    		name: "APS",
+	    		y: {{ lscountbyService1 }},
+	    		drilldown: "APS"
+	    	},{
+	    		name: "CDT",
+	    		y: {{ lscountbyService2 }},
+	    		drilldown: "CDT"
+	    	},{
+	    		name: "DIR",
+	    		y: {{ lscountbyService3 }},
+	    		drilldown: "DIR"
+	    	},{
+	    		name: "ECT",
+	    		y: {{ lscountbyService4 }},
+	    		drilldown: "ECT"
+	    	},{
+	    		name: "FIA",
+	    		y: {{ lscountbyService5 }},
+	    		drilldown: "FIA"
+	    	},{
+	    		name: "GNU",
+	    		y: {{ lscountbyService6 }},
+	    		drilldown: "GNU"
+	    	},{
+	    		name: "ISI",
+	    		y: {{ lscountbyService7 }},
+	    		drilldown: "ISI"
+	    	},{
+	    		name: "MCE",
+	    		y: {{ lscountbyService8 }},
+	    		drilldown: "MCE"
+	    	},{
+	    		name: "MRH",
+	    		y: {{ lscountbyService9 }},
+	    		drilldown: "MRH"
+	    	},{
+	    		name: "MSR",
+	    		y: {{ lscountbyService10 }},
+	    		drilldown: "MSR"
+	    	},{
+	    		name: "MTE",
+	    		y: {{ lscountbyService11 }},
+	    		drilldown: "MTE"
+	    	},{
+	    		name: "PMO",
+	    		y: {{ lscountbyService12 }},
+	    		drilldown: "PMO"
+	    	},{
+	    		name: "SAU",
+	    		y: {{ lscountbyService13 }},
+	    		drilldown: "SAU"
+	    	},{
+	    		name: "SCF",
+	    		y: {{ lscountbyService14 }},
+	    		drilldown: "SCF"
+	    	},{
+	    		name: "SIR",
+        		y: {{ lscountbyService15 }},
+	    		drilldown: "SIR"
+	    	},{
+	    		name: "SMP",
+	    		y: {{ lscountbyService16 }},
+	    		drilldown: "SMP"
+	    	},{
+	    		name: "SPR",
+	    		y: {{ lscountbyService17 }},
+	    		drilldown: "SPR"
+	    	},{
+	    		name: "SST",
+	    		y: {{ lscountbyService18 }},
+	    		drilldown: "SST"
+	    	}]
+	    }],
+        drilldown: {
+	    	series: [{
+	    		name:"APS",
+	    		id:"APS",
+	    		data: [ 
+	    			["Avec arrêt", {{ lscountapsaaa }} ], ["Sans arrêt", {{ lscountapsasa }} ], ["Bénin", {{ lscountapsab }} ], ["PA", {{ lscountapspa }} ], ["SD", {{ lscountapssd }} ], ["Mortel", {{ lscountapsm }} ], ["Refus CPAM", {{ lscountapsr }} ]
+	    		]
+            },{				    		
+	    		name:"CDT",
+	    		id:"CDT",
+	    		data: [
+                    ["Avec arrêt", {{ lscountcdtaaa }} ], ["Sans arrêt", {{ lscountcdtasa }} ], ["Bénin", {{ lscountcdtab }} ], ["PA", {{ lscountcdtpa }} ], ["SD", {{ lscountcdtsd }} ], ["Mortel", {{ lscountcdtm }} ], ["Refus CPAM", {{ lscountcdtr }} ]
+                ]
+            },{				    		
+	    		name:"DIR",
+	    		id:"DIR",
+	    		data: [
+                    ["Avec arrêt", {{ lscountdiraaa }} ], ["Sans arrêt", {{ lscountdirasa }} ], ["Bénin", {{ lscountdirab }} ], ["PA", {{ lscountdirpa }} ], ["SD", {{ lscountdirsd }} ], ["Mortel", {{ lscountdirm }} ], ["Refus CPAM", {{ lscountdirr }} ]
+                ]
+            },{				    		
+	    		name:"ECT",
+	    		id:"ECT",
+	    		data: [
+                    ["Avec arrêt", {{ lscountectaaa }} ], ["Sans arrêt", {{ lscountectasa }} ], ["Bénin", {{ lscountectab }} ], ["PA", {{ lscountectpa }} ], ["SD", {{ lscountectsd }} ], ["Mortel", {{ lscountectm }} ], ["Refus CPAM", {{ lscountectr }} ]
+                ]
+            },{				    		
+	    		name:"FIA",
+	    		id:"FIA",
+	    		data: [
+                    ["Avec arrêt", {{ lscountfiaaaa }} ], ["Sans arrêt", {{ lscountfiaasa }} ], ["Bénin", {{ lscountfiaab }} ], ["PA", {{ lscountfiapa }} ], ["SD", {{ lscountfiasd }} ], ["Mortel", {{ lscountfiam }} ], ["Refus CPAM", {{ lscountfiar }} ]
+                ]
+            },{				    		
+	    		name:"GNU",
+	    		id:"GNU",
+	    		data: [
+                    ["Avec arrêt", {{ lscountgnuaaa }} ], ["Sans arrêt", {{ lscountgnuasa }} ], ["Bénin", {{ lscountgnuab }} ], ["PA", {{ lscountgnupa }} ], ["SD", {{ lscountgnusd }} ], ["Mortel", {{ lscountgnum }} ], ["Refus CPAM", {{ lscountgnur }} ]
+                ]
+            },{				    		
+	    		name:"ISI",
+	    		id:"ISI",
+	    		data: [
+                    ["Avec arrêt", {{ lscountisiaaa }} ], ["Sans arrêt", {{ lscountisiasa }} ], ["Bénin", {{ lscountisiab }} ], ["PA", {{ lscountisipa }} ], ["SD", {{ lscountisisd }} ], ["Mortel", {{ lscountisim }} ], ["Refus CPAM", {{ lscountisir }} ]
+                ]
+            },{				    		
+	    		name:"MCE",
+	    		id:"MCE",
+	    		data: [
+                    ["Avec arrêt", {{ lscountmceaaa }} ], ["Sans arrêt", {{ lscountmceasa }} ], ["Bénin", {{ lscountmceab }} ], ["PA", {{ lscountmcepa }} ], ["SD", {{ lscountmcesd }} ], ["Mortel", {{ lscountmcem }} ], ["Refus CPAM", {{ lscountmcer }} ]
+                ]
+            },{				    		
+	    		name:"MRH",
+	    		id:"MRH",
+	    		data: [
+                    ["Avec arrêt", {{ lscountmrhaaa }} ], ["Sans arrêt", {{ lscountmrhasa }} ], ["Bénin", {{ lscountmrhab }} ], ["PA", {{ lscountmrhpa }} ], ["SD", {{ lscountmrhsd }} ], ["Mortel", {{ lscountmrhm }} ], ["Refus CPAM", {{ lscountmrhr }} ]
+                ]
+            },{				    		
+	    		name:"MSR",
+	    		id:"MSR",
+	    		data: [
+                    ["Avec arrêt", {{ lscountmsraaa }} ], ["Sans arrêt", {{ lscountmsrasa }} ], ["Bénin", {{ lscountmsrab }} ], ["PA", {{ lscountmsrpa }} ], ["SD", {{ lscountmsrsd }} ], ["Mortel", {{ lscountmsrm }} ], ["Refus CPAM", {{ lscountmsrr }} ]
+                ]
+            },{				    		
+	    		name:"MTE",
+	    		id:"MTE",
+	    		data: [
+                    ["Avec arrêt", {{ lscountmteaaa }} ], ["Sans arrêt", {{ lscountmteasa }} ], ["Bénin", {{ lscountmteab }} ], ["PA", {{ lscountmtepa }} ], ["SD", {{ lscountmtesd }} ], ["Mortel", {{ lscountmtem }} ], ["Refus CPAM", {{ lscountmter }} ]
+                ]
+            },{				    		
+	    		name:"PMO",
+	    		id:"PMO",
+	    		data: [
+                    ["Avec arrêt", {{ lscountpmoaaa }} ], ["Sans arrêt", {{ lscountpmoasa }} ], ["Bénin", {{ lscountpmoab }} ], ["PA", {{ lscountpmopa }} ], ["SD", {{ lscountpmosd }} ], ["Mortel", {{ lscountpmom }} ], ["Refus CPAM", {{ lscountpmor }} ]
+                ]
+            },{				    		
+	    		name:"SAU",
+	    		id:"SAU",
+	    		data: [
+                    ["Avec arrêt", {{ lscountsauaaa }} ], ["Sans arrêt", {{ lscountsauasa }} ], ["Bénin", {{ lscountsauab }} ], ["PA", {{ lscountsaupa }} ], ["SD", {{ lscountsausd }} ], ["Mortel", {{ lscountsaum }} ], ["Refus CPAM", {{ lscountsaur }} ]
+                ]
+            },{				    		
+	    		name:"SCF",
+	    		id:"SCF",
+	    		data: [
+                    ["Avec arrêt", {{ lscountscfaaa }} ], ["Sans arrêt", {{ lscountscfasa }} ], ["Bénin", {{ lscountscfab }} ], ["PA", {{ lscountscfpa }} ], ["SD", {{ lscountscfsd }} ], ["Mortel", {{ lscountscfm }} ], ["Refus CPAM", {{ lscountscfr }} ]
+                ]
+            },{				    		
+	    		name:"SIR",
+	    		id:"SIR",
+	    		data: [
+                    ["Avec arrêt", {{ lscountsiraaa }} ], ["Sans arrêt", {{ lscountsirasa }} ], ["Bénin", {{ lscountsirab }} ], ["PA", {{ lscountsirpa }} ], ["SD", {{ lscountsirsd }} ], ["Mortel", {{ lscountsirm }} ], ["Refus CPAM", {{ lscountsirr }} ]
+                ]
+            },{				    		
+	    		name:"SMP",
+	    		id:"SMP",
+	    		data: [
+                    ["Avec arrêt", {{ lscountsmpaaa }} ], ["Sans arrêt", {{ lscountsmpasa }} ], ["Bénin", {{ lscountsmpab }} ], ["PA", {{ lscountsmppa }} ], ["SD", {{ lscountsmpsd }} ], ["Mortel", {{ lscountsmpm }} ], ["Refus CPAM", {{ lscountsmpr }} ]
+                ]
+            },{				    		
+	    		name:"SPR",
+	    		id:"SPR",
+	    		data: [
+                    ["Avec arrêt", {{ lscountspraaa }} ], ["Sans arrêt", {{ lscountsprasa }} ], ["Bénin", {{ lscountsprab }} ], ["PA", {{ lscountsprpa }} ], ["SD", {{ lscountsprsd }} ], ["Mortel", {{ lscountsprm }} ], ["Refus CPAM", {{ lscountsprr }} ]
+                ]
+            },{				    		
+	    		name:"SST",
+	    		id:"SST",
+	    		data: [
+                    ["Avec arrêt", {{ lscountsstaaa }} ], ["Sans arrêt", {{ lscountsstasa }} ], ["Bénin", {{ lscountsstab }} ], ["PA", {{ lscountsstpa }} ], ["SD", {{ lscountsstsd }} ], ["Mortel", {{ lscountsstm }} ], ["Refus CPAM", {{ lscountsstr }} ]
+                ]          
+	    	}]
+	    }
+	});
+</script>
+
+<script>
+	Highcharts.setOptions({
+		colors: ['#f20d0d', '#ff8000', '#bfff00', '#00ffff', '#8000ff', '#000000', '#cccc00']
+	});
+			
+	Highcharts.chart('container5', {
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: "Nombre d'Accident du Travail par Projet 2019"
+		},
+		xAxis: {
+			categories: [
+				'2P3519',
+				'4R3519',
+				'TEM',
+				'Hors Process'
+			],
+			crosshair: true
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Personnes'
+			}
+		},
+		tooltip: {
+			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+			            '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+			footerFormat: '</table>',
+			shared: true,
+			useHTML: true
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0
+			}
+		},
+		series: [{
+			name: 'Avec arrêt',
+			data: [ {{ lscount2P35aaa }}, {{ lscount4R35aaa }}, {{ lscounttemaaa }}, {{ lscounthorsaaa }} ]
+
+		}, {
+			name: 'Sans arrêt',
+			data: [ {{ lscount2P35asa }}, {{ lscount4R35asa }}, {{ lscounttemasa }}, {{ lscounthorsasa }} ]
+
+		}, {
+			name: 'Bénin',
+			data: [ {{ lscount2P35ab }}, {{ lscount4R35ab }}, {{ lscounttemab }}, {{ lscounthorsab }} ]
+
+		}, {
+			name: 'PA',
+			data: [ {{ lscount2P35pa }}, {{ lscount4R35pa }}, {{ lscounttempa }}, {{ lscounthorspa }} ]
+			    
+		}, {
+			name: 'SD',
+			data: [ {{ lscount2P35sd }}, {{ lscount4R35sd }}, {{ lscounttemsd }}, {{ lscounthorssd }} ]
+			    
+		}, {
+			name: 'Mortel',
+			data: [ {{ lscount2P35m }}, {{ lscount4R35m }}, {{ lscounttemm }}, {{ lscounthorsm }} ]
+			    
+		}, {
+			name: 'Refus CPAM',
+			data: [ {{ lscount2P35r }}, {{ lscount4R35r }}, {{ lscounttemr }}, {{ lscounthorsr }} ]
+
+		}]
+	});
+
+</script>
+
+<script>
+	Highcharts.setOptions({
+		colors: ['#f20d0d', '#ff8000', '#bfff00', '#00ffff', '#8000ff', '#000000', '#cccc00']
+	});
+	Highcharts.chart('container6', {
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: "Nombre d'Accident Avec arret par mois-2019"
+		},
+		xAxis: {
+			categories: [
+				'Janvier',
+				'Février',
+				'Mars',
+				'Avril',
+				'Mai',
+				'June',
+				'juillet',
+				'Aout',
+				'Septembre',
+				'Octobre',
+				'Novembre',
+				'Décembre'
+			],
+			crosshair: true
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Personnes'
+			}
+		},
+		tooltip: {
+			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+			            '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+			footerFormat: '</table>',
+			shared: true,
+			useHTML: true
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0,
+				dataLabels:{
+					enabled: false
+				}
+			}
+		},
+		series: [{
+			name: 'Avec arrêt',
+			data: [ {{ lscount01aaa }}, {{ lscount02aaa }}, {{ lscount03aaa }}, {{ lscount04aaa }}, {{ lscount05aaa }}, {{ lscount06aaa }}, {{ lscount07aaa }}, {{ lscount08aaa }}, {{ lscount09aaa }}, {{ lscount10aaa }}, {{ lscount11aaa }}, {{ lscount12aaa }} ]
+		},{
+			name: 'Sans arrêt',
+			data: [ {{ lscount01asa }}, {{ lscount02asa }}, {{ lscount03asa }}, {{ lscount04asa }}, {{ lscount05asa }}, {{ lscount06asa }}, {{ lscount07asa }}, {{ lscount08asa }}, {{ lscount09asa }}, {{ lscount10asa }}, {{ lscount11asa }}, {{ lscount12asa }} ]
+		},{
+			name: 'Bénin',
+			data: [ {{ lscount01ab }}, {{ lscount02ab }}, {{ lscount03ab }}, {{ lscount04ab }}, {{ lscount05ab }}, {{ lscount06ab }}, {{ lscount07ab }}, {{ lscount08ab }}, {{ lscount09ab }}, {{ lscount10ab }}, {{ lscount11ab }}, {{ lscount12ab }} ]
+		},{
+			name: 'PA',
+			data: [ {{ lscount01pa }}, {{ lscount02pa }}, {{ lscount03pa }}, {{ lscount04pa }}, {{ lscount05pa }}, {{ lscount06pa }}, {{ lscount07pa }}, {{ lscount08pa }}, {{ lscount09pa }}, {{ lscount10pa }}, {{ lscount11pa }}, {{ lscount12pa }} ]
+		},{
+			name: 'SD',
+			data: [ {{ lscount01sd }}, {{ lscount02sd }}, {{ lscount03sd }}, {{ lscount04sd }}, {{ lscount05sd }}, {{ lscount06sd }}, {{ lscount07sd }}, {{ lscount08sd }}, {{ lscount09sd }}, {{ lscount10sd }}, {{ lscount11sd }}, {{ lscount12sd }} ]
+		},{
+			name: 'Mortel',
+			data: [ {{ lscount01m }}, {{ lscount02m }}, {{ lscount03m }}, {{ lscount04m }}, {{ lscount05m }}, {{ lscount06m }}, {{ lscount07m }}, {{ lscount08m }}, {{ lscount09m }}, {{ lscount10m }}, {{ lscount11m }}, {{ lscount12m }} ]
+		},{
+			name: 'Refus CPAM',
+			data: [ {{ lscount01r }}, {{ lscount02r }}, {{ lscount03r }}, {{ lscount04r }}, {{ lscount05r }}, {{ lscount06r }}, {{ lscount07r }}, {{ lscount08r }}, {{ lscount09r }}, {{ lscount10r }}, {{ lscount11r }}, {{ lscount12r }} ]
+
+		}]
+	});
+</script>
+
+<script>
+	Highcharts.setOptions({
+		colors: ['#00e600'],
+	});
+	Highcharts.chart('container7', {
+		chart: {
+			type: 'xrange'
+		},
+
+		title: {
+			text: 'Accident range'
+		},
+		xAxis: {
+			type: 'datetime',
+			title: {
+				text: 'Time range'
+			},
+			plotLines: [{
+				value: Date.now(),
+				dashStyle: 'dash',
+				width: 1,
+				color: '#d33'
+			}]
+		},
+		yAxis: {
+			title: {
+				text: 'Numero Prevensiss'
+			},
+			categories: [
+				{% for p in nPre %}
+				{{ p.nPrevensiss }},
+				{% endfor %}
+			],
+			reversed: true
+		},
+		series: [{
+			name: 'Accident numero',
+			// pointPadding: 0,
+			// groupPadding: 0,
+			borderColor: 'gray',
+			pointWidth: 20,
+			data: [
+				{% for p in nPre %}
+				{
+					x: Date.UTC({{ p.dateAccident|date_modify('-1 monthe')|date('Y, m, d') }}),
+					x2: Date.UTC({{ p.dateAccident|date_modify('-1 monthe')|date_modify('+14 day')|date('Y, m, d') }}),
+					y: {{ loop.index }} - 1
+				},
+				{% endfor %}
+			],
+			dataLabels: {
+				enabled: true
+			},
+		}]
+
+	});
+</script>
+
+{% endblock %}
+

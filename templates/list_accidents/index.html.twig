@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List Accidents{% endblock %}
+
+{% block body %}
+<div class="container">
+<button type="button" class="btn btn-primary"><a href="/list/accidents/2019">List accident 2019</a></button>
+<button type="button" class="btn btn-primary"><a href="/list/accidents/2020">List accident 2020</a></button>
+<br><br><br></div>
+
+<div class="container mt-3">
+  	<input class="form-control" id="myInput" type="text" placeholder="Search..">
+  	<br>
+  	<br>
+</div>
+
+<table id="NP" class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th width="150px">N Prevensiss</th>
+            <th width="150px">Date Accident</th>
+            <th width="150px">Type Accident</th>
+            <th width="100px">Trajet/Service</th>
+            <th width="550px">Recit succinct</th>
+            <th width="100px">Service</th>
+            <th width="100px">Employeur</th>
+            <th width="100px">Projet</th>
+            <th width="150px">Information</th>
+        </tr>
+    </thead>
+    <tbody id="myTable">
+    {% for l in ls %}
+        <tr>
+            <td>{{l.nPrevensiss}}</td>
+            <td>{{l.dateAccident|date('d/m/Y') }}</td>
+            <td>{{l.typeAccident}}</td>
+            <td>{{l.trajetService}}</td>
+            <td>{{l.recitSuccinct}}</td>
+            <td>{{l.service}}</td>
+            <td>{{l.employeur}}</td>
+            <td>{{l.projet}}</td>
+            <td><a class="btn btn-info glyphicon glyphicon-question-sign" href="/listacc/byid/{{l.nPrevensiss}}"></a>
+                {% if app.user is defined and app.user %}
+                    <a class="btn btn-warning glyphicon glyphicon-pencil" href="/edit/{{l.nPrevensiss}}"></a>
+                    
+                        {% if app.user.role is defined and app.user.role == 'Admin' %}
+                        <a href="#" class="btn btn-danger glyphicon glyphicon-trash" data-id="{{ l.nPrevensiss }}"></a>
+                        {% endif %}
+                {% endif %}
+            </td>
+        
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+	$("#myInput").on("keyup", function(){
+		var value = $(this).val().toLowerCase();
+		$("#myTable tr").filter(function(){
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+});
+</script>
+<script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}
